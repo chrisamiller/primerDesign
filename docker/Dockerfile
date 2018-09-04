@@ -40,5 +40,12 @@ USER ubuntu
 WORKDIR /data/
 
 # by default, primerDesign is executed
-ENTRYPOINT ["python", "/opt/primerDesign/primerDesign.py"]
+#ENTRYPOINT ["python", "/opt/primerDesign/primerDesign.py"]
 
+RUN apt-get update -y && apt-get install -y libnss-sss tzdata
+RUN ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
+
+#LSF: Java bug that need to change the /etc/timezone.
+#     The above /etc/localtime is not enough.
+RUN echo "America/Chicago" > /etc/timezone
+RUN dpkg-reconfigure --frontend noninteractive tzdata
